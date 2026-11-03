@@ -1,0 +1,485 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>For Linh 💗</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ffe0ec, #ffc2d9, #fff0f5);
+            min-height: 100vh;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        /* Khung chính */
+
+        .container {
+            position: relative;
+            z-index: 2;
+            background: rgba(255,255,255,0.85);
+            width: 90%;
+            max-width: 550px;
+            padding: 40px 25px;
+            border-radius: 30px;
+            margin: 100px auto;
+            box-shadow: 0 10px 40px rgba(255,80,130,0.2);
+        }
+
+        h1 {
+            color: #ff4f87;
+            font-size: 32px;
+        }
+
+        p {
+            color: #8c5268;
+            font-size: 18px;
+        }
+
+        /* Hình trái tim */
+
+        .main-heart {
+            font-size: 65px;
+            animation: heartbeat 1s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        /* Hai nút */
+
+        button {
+            border: none;
+            padding: 13px 30px;
+            font-size: 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 15px;
+            transition: 0.2s;
+        }
+
+        #yes {
+            background: #ff4f87;
+            color: white;
+        }
+
+        #yes:hover {
+            background: #ff1765;
+            transform: scale(1.1);
+        }
+
+        #no {
+            background: #eeeeee;
+            color: #555;
+            position: absolute;
+        }
+
+        /* Khu vực trái tim sau khi đồng ý */
+
+        #result {
+            display: none;
+        }
+
+        #result h2 {
+            color: #ff4081;
+        }
+
+        #bigHeart {
+            font-size: 100px;
+            animation: heartbeat 0.8s infinite;
+        }
+
+        /* Trái tim bay */
+
+        .floating-heart {
+            position: fixed;
+            bottom: -50px;
+            animation: fly 4s linear forwards;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        @keyframes fly {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Lấp lánh */
+
+        .sparkle {
+            position: fixed;
+            pointer-events: none;
+            animation: sparkle 2s linear forwards;
+            z-index: 5;
+        }
+
+        @keyframes sparkle {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.5);
+            }
+
+            100% {
+                transform: scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Bức thư */
+
+        #letter {
+            display: none;
+            background: #fff0f5;
+            padding: 20px;
+            border-radius: 20px;
+            margin-top: 20px;
+            color: #9c4565;
+            line-height: 1.7;
+            animation: appear 1s;
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Nút thư */
+
+        #letterButton {
+            display: none;
+            background: #ff8fb1;
+            color: white;
+        }
+
+        /* Nút nhạc */
+
+        #musicButton {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: white;
+            color: #ff4f87;
+            font-size: 14px;
+            z-index: 20;
+        }
+
+        /* Pháo hoa */
+
+        .firework {
+            position: fixed;
+            font-size: 25px;
+            animation: boom 1.5s ease-out forwards;
+            pointer-events: none;
+            z-index: 15;
+        }
+
+        @keyframes boom {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(3) translateY(-100px);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 120px auto;
+                padding: 30px 15px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+
+            p {
+                font-size: 16px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Nút nhạc -->
+
+    <button id="musicButton" onclick="toggleMusic()">
+        🎵 Bật nhạc
+    </button>
+
+    <audio id="music" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Màn hình tỏ tình -->
+
+    <div class="container" id="question">
+
+        <div class="main-heart">💗</div>
+
+        <h1>Hi Linh! 💌</h1>
+
+        <p>Tớ có một điều muốn nói với cậu...</p>
+
+        <h2 style="color:#ff6b9a;">
+            Linh có đồng ý làm người yêu tớ không?
+        </h2>
+
+        <br>
+
+        <button id="yes" onclick="love()">
+            Có ❤️
+        </button>
+
+        <button id="no"
+                onmouseover="moveButton()"
+                ontouchstart="moveButton()">
+            Không 💔
+        </button>
+
+    </div>
+
+
+    <!-- Màn hình sau khi đồng ý -->
+
+    <div class="container" id="result">
+
+        <div id="bigHeart">❤️</div>
+
+        <h1>YAYYYYY!!!</h1>
+
+        <h2>Linh đồng ý rồi!!! 💗</h2>
+
+        <p>Từ hôm nay, thế giới của tớ có thêm một người đặc biệt rồi!</p>
+
+        <button id="letterButton" onclick="showLetter()">
+            💌 Mở thư tình
+        </button>
+
+        <div id="letter">
+
+            <h2>Dear Linh, 💕</h2>
+
+            <p>
+                Tớ đã suy nghĩ rất lâu mới quyết định nói điều này.
+                Tớ không biết phải diễn tả thế nào,
+                nhưng mỗi lần nói chuyện với cậu,
+                ngày của tớ dường như trở nên vui hơn một chút.
+            </p>
+
+            <p>
+                Tớ mong rằng chúng ta sẽ có thật nhiều
+                kỷ niệm đẹp cùng nhau.
+            </p>
+
+            <p>
+                Cảm ơn Linh vì đã xuất hiện trong thế giới của tớ!
+            </p>
+
+            <h2>With love, ❤️</h2>
+
+            <p>Người bí mật của cậu 💗</p>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        // Nút KHÔNG chạy trốn
+
+        function moveButton() {
+
+            var no = document.getElementById("no");
+
+            var maxX = window.innerWidth - no.offsetWidth;
+            var maxY = window.innerHeight - no.offsetHeight;
+
+            var x = Math.random() * maxX;
+            var y = Math.random() * maxY;
+
+            no.style.position = "fixed";
+            no.style.left = x + "px";
+            no.style.top = y + "px";
+
+        }
+
+
+        // Khi nhấn CÓ
+
+        function love() {
+
+            document.getElementById("question").style.display = "none";
+
+            document.getElementById("result").style.display = "block";
+
+            document.getElementById("letterButton").style.display = "inline-block";
+
+            // Tạo 50 trái tim bay
+
+            for (var i = 0; i < 50; i++) {
+
+                setTimeout(createHeart, i * 100);
+
+            }
+
+            // Pháo hoa
+
+            for (var i = 0; i < 15; i++) {
+
+                setTimeout(createFirework, i * 150);
+
+            }
+
+        }
+
+
+        // Tạo trái tim bay
+
+        function createHeart() {
+
+            var heart = document.createElement("div");
+
+            heart.className = "floating-heart";
+
+            var hearts = ["❤️", "💕", "💗", "💖", "💘"];
+
+            heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+
+            heart.style.left = Math.random() * 100 + "vw";
+
+            heart.style.fontSize = (20 + Math.random() * 35) + "px";
+
+            heart.style.animationDuration = (3 + Math.random() * 3) + "s";
+
+            document.body.appendChild(heart);
+
+            setTimeout(function() {
+
+                heart.remove();
+
+            }, 6000);
+
+        }
+
+
+        // Tạo hiệu ứng pháo hoa
+
+        function createFirework() {
+
+            var firework = document.createElement("div");
+
+            firework.className = "firework";
+
+            firework.innerHTML = "✨";
+
+            firework.style.left = Math.random() * 100 + "vw";
+
+            firework.style.top = Math.random() * 100 + "vh";
+
+            document.body.appendChild(firework);
+
+            setTimeout(function() {
+
+                firework.remove();
+
+            }, 2000);
+
+        }
+
+
+        // Mở thư tình
+
+        function showLetter() {
+
+            document.getElementById("letter").style.display = "block";
+
+            document.getElementById("letterButton").style.display = "none";
+
+        }
+
+
+        // Bật / tắt nhạc
+
+        function toggleMusic() {
+
+            var music = document.getElementById("music");
+
+            var button = document.getElementById("musicButton");
+
+            if (music.paused) {
+
+                music.play();
+
+                button.innerHTML = "🔇 Tắt nhạc";
+
+            } else {
+
+                music.pause();
+
+                button.innerHTML = "🎵 Bật nhạc";
+
+            }
+
+        }
+
+
+        // Trái tim nhỏ rơi liên tục
+
+        setInterval(function() {
+
+            if (document.getElementById("result").style.display !== "block") {
+                return;
+            }
+
+            createHeart();
+
+        }, 500);
+
+
+    </script>
+
+</body>
+</html>
